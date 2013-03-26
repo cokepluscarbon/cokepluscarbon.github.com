@@ -1,0 +1,42 @@
+﻿<!DOCTYPE HTML>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<title>01 Mouse Event</title>
+	<link rel="stylesheet" href="styles/style.css" />
+	<script type="text/javascript" src="javascripts/utils.js"></script>
+	<script type="text/javascript" src="javascripts/arrow.js"></script>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="450">Your broswer not support canvas!</canvas>
+	<script type="text/javascript">
+	/*
+	 *完成这样一个需求，画一个箭头在画布中间，然后箭头跟着鼠标的方向转动
+	 */
+	window.onload = function() {
+		var canvas = document.getElementById('canvas'),
+			context = canvas.getContext('2d'),
+			mouse = utils.captureMouse(canvas),
+			arrow = new Arrow();
+		
+		arrow.x = canvas.width / 2; // 箭头在画布中间
+		arrow.y = canvas.height / 2;
+		
+		(function drawFrame(){ // 自调用函数
+			window.requestAnimationFrame(drawFrame, canvas); // 相当与setTimeout(drawFrame, time) 不过这个内置的函数，浏览器做了优化，更适合做动画
+			context.clearRect(0, 0, canvas.width, canvas.height); // 清除画布，重新绘图
+
+			// 取得当前鼠标(mouse.x,mouse.y)到中心(arrow.x,arrow.y)的角度，然后让arrow进行旋转，注意这个角度是数字0-2PI
+			// 可知 tanθ=(mouse.y-arrow.y)/(mouse.x-arrow.x) 推出 θ = arctan(mouse.y-arrow.y)/(mouse.x-arrow.x)
+			// 用javascript的Math表示就是 θ = Math.atan2(mouse.y-arrow.y)/(mouse.x-arrow.x)
+			var dy = mouse.y - arrow.y,
+				dx = mouse.x - arrow.x;
+			
+			arrow.rotation = Math.atan2(dy,dx); // Math.atan(l)与Math.atan2(y,x)的区别请百度
+			
+			arrow.draw(context);
+		}());
+	}
+	</script>
+</body>
+</html>
