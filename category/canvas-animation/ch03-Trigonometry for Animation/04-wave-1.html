@@ -2,7 +2,7 @@
 <html lang="zh_CN">
 <head>
 	<meta charset="UTF-8">
-	<title>02 Bobbing</title>
+	<title>04 Linear vertical motion</title>
 	<link rel="stylesheet" href="styles/style.css" />
 	<script type="text/javascript" src="javascripts/utils.js"></script>
 	<script type="text/javascript" src="javascripts/ball.js"></script>
@@ -11,17 +11,18 @@
 	<canvas id="canvas" width="800" height="450">Your broswer not support canvas!</canvas>
 	<script type="text/javascript">
 	/*
-	 * 画一个小球，然后让小球上下摆动，利用sinθ进行上下摆动
+	 * 画一个小球，然后让小球上下摆动同时向右移动
 	 */
 	window.onload = function() {
 		var canvas = document.getElementById('canvas'),
 			context = canvas.getContext('2d'),
 			ball = new Ball(),
-			speed = Math.PI / 60, // 两秒来回一次
+			xSpeed = 200 / 60, // 1秒移动200
+			ySpeed = Math.PI / 60, // 两秒来回一次
 			range = 100, // 波动幅度
 			angle = 0;
 		
-		ball.x = canvas.width / 2;
+		ball.x = 0;
 		ball.y = canvas.height / 2;
 		
 		(function drawFrame(){ // 自调用函数
@@ -31,7 +32,8 @@
 			/*
 			 * sinθ 随着角度增加而在x轴上下波动，我们可以利用这个特征
 			 */
-			angle += speed;
+			angle += ySpeed;
+			ball.x += xSpeed;
 			ball.y = canvas.height / 2 + range * Math.sin(angle); // 摆动的幅度为上下100
 			
 			ball.draw(context);
