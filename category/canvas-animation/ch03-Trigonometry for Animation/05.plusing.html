@@ -1,0 +1,42 @@
+﻿<!DOCTYPE HTML>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<title>05 Plusing motion</title>
+	<link rel="stylesheet" href="styles/style.css" />
+	<script type="text/javascript" src="javascripts/utils.js"></script>
+	<script type="text/javascript" src="javascripts/ball.js"></script>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="450">Your broswer not support canvas!</canvas>
+	<script type="text/javascript">
+	/*
+	 * 利用sin，制作像心脏跳动的小球
+	 */
+	window.onload = function() {
+		var canvas = document.getElementById('canvas'),
+			context = canvas.getContext('2d'),
+			ball = new Ball(),
+			angle = 0,
+			speed = Math.PI / 60; // 波动幅度
+		
+		ball.x = canvas.width / 2;
+		ball.y = canvas.height / 2;
+		
+		(function drawFrame(){ // 自调用函数
+			window.requestAnimationFrame(drawFrame, canvas); 
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			
+			/*
+			 * 把sinθ作用到scaleX和scaleY即可
+			 */
+
+			ball.scaleX = ball.scaleY = 1.5 + Math.sin(angle);
+			angle += speed;
+			
+			ball.draw(context);
+		}());
+	}
+	</script>
+</body>
+</html>
