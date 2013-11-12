@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>曾国泰个人简历</title>
+	<!-- 干嘛偷看我源码！既然看了，好吧，8k求带走！ :P -->
 	<style type="text/css">
 	body {
 		color: #666;
@@ -12,7 +13,7 @@
 		margin: 0 auto;
 		padding: 10px 20px;
 		width: 800px; 
-		height: 1200px;
+		height: 950px;
 		border: solid 1px #888;
 		background-color: #fff;
 		box-shadow: 2px 2px 3px 1px #999;
@@ -23,21 +24,47 @@
 	}
 	table tr td {
 		padding: 0 5px;
-		line-height: 38px;
+		font-size: 14px;
+		line-height: 32px;
 		border: solid 1px #bbb;
+	}
+	table tr td:nth-child(1),table tr td:nth-child(2) {
+		width: 43%;
+	}
+	h3 {
+		font-size: 16px;
+		margin: 5px 0px;
+	}
+	p {
+		font-size: 14px;
+		text-indent: 2em;
+	}
+	section {
+		border: dashed 1px white;
+	}
+	section:hover {
+		background: #eee;
+		border: dashed 1px #369;
+	}
+	section:hover div {
+		display: block !important;
 	}
 	</style>
 </head>
 <body>
 	<article>
 		<header>
-			<h1>曾国泰个人简历</h1>
+			<h1 style="text-align:center;">曾国泰个人简历</h1>
 		</header>
+		<!-- 基本信息{ -->
+		<h3>基本资料</h3>
 		<table>
 			<tr>
 				<td>姓名：曾国泰</td>
 				<td>民族：汉族</td>
-				<td rowspan="4">dfd</td>
+				<td rowspan="5" style="padding:5px; height:114px;">
+					<img src="images/mine.jpg" width="114" height="155" style="float:left;" />
+				</td>
 			</tr>
 			<tr>
 				<td>性别：男</td>
@@ -49,9 +76,48 @@
 			</tr>
 			<tr>
 				<td>联系电话：86-13824128855</td>
-				<td>QQ号码：93948886</td>
+				<td>电子邮件：<a href="mailto:loveorz@qq.vip.com">loveorz@qq.vip.com</a></td>
+			</tr>
+			<tr>
+				<td>目前工作情况：在职</td>
+				<td>工作年限：2年</td>
 			</tr>
 		</table>
+		<!-- 基本信息} -->
+
+		<!-- 教育经历{ -->
+		<section style="margin-top:30px; position:relative;">
+			<h3>教育经历</h3>
+			<ul>
+				<li>时间：2008年9月-2012年7月</li>
+				<li>院校：北京师范大学珠海分校</li>
+				<li>学历：本科</li>
+				<li>专业：软件工程</li>
+			</ul>
+			<div style="display:none; font-size:90px; line-height:100%; text-align:center; color:white; position:absolute; right:20px; top: 10px; border-radius:50%; width:100px; height:100px; background:#369;">1</div>
+		</section>
+
+		<!-- 教育经历{ -->
+		<section style="margin-top:30px; position:relative;">
+			<h3>工作经历</h3>
+			<ul>
+				<li>时间：2008年9月-2012年7月</li>
+				<li>公司：全志科技股份有限公司</li>
+				<li>职位：WEB开发工程师</li>
+				<li>描述：软件工程</li>
+			</ul>
+			<div style="display:none; font-size:90px; line-height:100%; text-align:center; color:white; position:absolute; right:20px; top: 10px; border-radius:50%; width:100px; height:100px; background:#369;">1</div>
+		</section>
+
+		<!-- 教育经历{ -->
+		<section style="margin-top:30px; position:relative;">
+			<h3>自我介绍</h3>
+			<p>为人：性格温和、开朗。抗压能力强，吃苦耐劳，艰苦奋斗（笑）。</p>
+			<p>技术：熟悉使用Java、Spring、Mybatis、Maven、前端、WEB安全。喜欢折腾新技术。喜欢逛知乎、infoq、https:github.com、www.stackoverflow.com。熟悉从前端到后台、数据库、服务器、安全等技术。有比较好的架构能力。</p>
+			<p>为人温和，技术敏感!</p>
+			<div style="display:none; font-size:90px; line-height:100%; text-align:center; color:white; position:absolute; right:20px; top: 10px; border-radius:50%; width:100px; height:100px; background:#369; z-index:-0;">1</div>
+		</section>
+	
 	</article>
 </body>
 </html>
