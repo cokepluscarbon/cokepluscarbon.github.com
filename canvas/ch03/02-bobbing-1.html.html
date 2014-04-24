@@ -9,6 +9,7 @@
 	</head>
 	<body>
 		<canvas id="canvas" width="600" height="400"></canvas>
+		<div id="fps"></div>
 		<script>
 			window.onload = function() {
 				var canvas = document.getElementById('canvas');
@@ -19,13 +20,19 @@
 				var angle = 0;
 				ball.x = canvas.width / 2;
 				ball.y = canvas.height / 2;
-				
-				( function drawFrame(time) {
+				// var last = 0;
+				( function drawFrame(now) {
 						window.requestAnimationFrame(drawFrame);
 						context.clearRect(0, 0, canvas.width, canvas.height);
 						
 						ball.y = canvas.height / 2 +  Math.sin(angle) * 150;
-						angle += 0.1;
+						angle += Math.PI / 60;
+						
+						// 浏览器最高1s60帧，如果要动作在2s内完成，则1s转Math.PI度，平均每帧增加Math.PI/60
+						
+						// 计算动作帧数
+						// fps.innerText = Math.floor(1000 /(now - last)) + "fps";
+						// last = now;
 						
 						ball.draw(context);
 					}());
