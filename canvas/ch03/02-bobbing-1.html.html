@@ -5,7 +5,7 @@
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="../styles/style.css"/>
 		<script type="text/javascript" src="../javascripts/utils.js" ></script>
-		<script type="text/javascript" src="../javascripts/arrow.js" ></script>
+		<script type="text/javascript" src="../javascripts/ball.js" ></script>
 	</head>
 	<body>
 		<canvas id="canvas" width="600" height="400"></canvas>
@@ -15,19 +15,19 @@
 				var context = canvas.getContext('2d');
 				var mouse = utils.captureMouse(canvas);
 
-				var arrow = new Arrow();
-				arrow.x = canvas.width / 2;
-				arrow.y = canvas.height / 2;
+				var ball = new Ball();
+				var angle = 0;
+				ball.x = canvas.width / 2;
+				ball.y = canvas.height / 2;
 				
-				( function drawFrame() {
+				( function drawFrame(time) {
 						window.requestAnimationFrame(drawFrame);
 						context.clearRect(0, 0, canvas.width, canvas.height);
-						var dx = mouse.x - arrow.x;
-						var dy = mouse.y - arrow.y;
-						arrow.rotation = Math.atan2(dy, dx);
-						// see http://zh.wikipedia.org/zh/Atan2
-						//radians
-						arrow.draw(context);
+						
+						ball.y = canvas.height / 2 +  Math.sin(angle) * 150;
+						angle += 0.1;
+						
+						ball.draw(context);
 					}());
 			};
 		</script>
