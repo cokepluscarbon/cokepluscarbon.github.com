@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../styles/style.css"/>
+		<script type="text/javascript" src="../javascripts/utils.js" ></script>
+		<script type="text/javascript" src="../javascripts/ball.js" ></script>
+	</head>
+	<body>
+		<canvas id="canvas" width="1000" height="600"></canvas>
+		<div id="fps"></div>
+		<script>
+			window.onload = function() {
+				var canvas = document.getElementById('canvas');
+				var context = canvas.getContext('2d');
+				var mouse = utils.captureMouse(canvas);
+
+				var centerX = canvas.width / 2;
+				var centerY = canvas.height / 2;
+				var angleX = 0;
+				var angleY = 0;
+				var speedX = 0.055;
+				var speedY = 0.07;
+				var range = 250;
+				
+				( function drawFrame() {
+						window.requestAnimationFrame(drawFrame);
+						// context.clearRect(0, 0, canvas.width, canvas.height);
+						
+						context.lineTo(centerX + Math.sin(angleX) * range, centerY + Math.sin(angleY) * range);
+						angleX += speedX;
+						angleY += speedY;
+						
+						context.stroke();
+					}());
+			};
+		</script>
+	</body>
+</html>

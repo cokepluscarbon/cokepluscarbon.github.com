@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../styles/style.css"/>
+		<script type="text/javascript" src="../javascripts/utils.js" ></script>
+		<script type="text/javascript" src="../javascripts/ball.js" ></script>
+	</head>
+	<body>
+		<canvas id="canvas" width="1000" height="600"></canvas>
+		<div id="fps"></div>
+		<script>
+			window.onload = function() {
+				var canvas = document.getElementById('canvas');
+				var context = canvas.getContext('2d');
+				var mouse = utils.captureMouse(canvas);
+
+				var ball = new Ball();		
+				var centerX = canvas.width / 2;
+				var centerY = canvas.height / 2;
+				var rangeY = canvas.height / 2;
+				var speed = 0.05; // 假如60fps，那么每秒旋转速率为0.05 * 60 = 3，也就是 180/PI*3约等于180度，也就是差不多每秒旋转180度
+				var angle = 0;
+				
+				ball.x = centerX;
+				ball.y = centerY;
+				
+				( function drawFrame() {
+						window.requestAnimationFrame(drawFrame);
+						context.clearRect(0, 0, canvas.width, canvas.height);
+						
+						ball.y = centerY + Math.sin(angle) * rangeY;
+						angle += speed;
+						
+						ball.draw(context);
+					}());
+			};
+		</script>
+	</body>
+</html>
