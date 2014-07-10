@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../styles/style.css"/>
+		<script type="text/javascript" src="../javascripts/utils.js" ></script>
+		<script type="text/javascript" src="../javascripts/ball.js" ></script>
+	</head>
+	<body>
+		<canvas id="canvas" width="1000" height="600"></canvas>
+		<div id="fps"></div>
+		<script>
+			window.onload = function() {
+				var canvas = document.getElementById('canvas');
+				var context = canvas.getContext('2d');
+				var ball = new Ball();
+				var angle = 30;
+				var speed = 1;
+
+				ball.x = 0;
+				ball.y = 0;
+				
+				var radians = angle * Math.PI / 180;
+				var vx = Math.cos(radians) * speed;
+				var vy = Math.sin(radians) * speed;
+				
+				(function drawFrame() {
+					window.requestAnimationFrame(drawFrame, canvas);
+					context.clearRect(0, 0, canvas.width, canvas.height);
+					
+					ball.x += vx;
+					ball.y += vy;
+					
+					ball.draw(context);
+				}());
+			};
+		</script>
+	</body>
+</html>

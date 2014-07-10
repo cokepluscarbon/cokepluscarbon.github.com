@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../styles/style.css"/>
+		<script type="text/javascript" src="../javascripts/utils.js" ></script>
+		<script type="text/javascript" src="../javascripts/arrow.js" ></script>
+	</head>
+	<body>
+		<canvas id="canvas" width="1000" height="600"></canvas>
+		<script>
+			window.onload = function() {
+				var canvas = document.getElementById('canvas'), context = canvas.getContext('2d'), mouse = utils.captureMouse(canvas), arrow = new Arrow(), vr = 2;
+				//degrees
+				arrow.x = canvas.width / 2;
+				arrow.y = canvas.height / 2;
+				( function drawFrame() {
+						window.requestAnimationFrame(drawFrame, canvas);
+						context.clearRect(0, 0, canvas.width, canvas.height);
+						arrow.rotation += vr * Math.PI / 180;
+						//to radians
+						arrow.draw(context);
+					}());
+			};
+		</script>
+	</body>
+</html>
