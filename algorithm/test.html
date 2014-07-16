@@ -17,7 +17,10 @@
 	<body>
 		<canvas  id="canvas" width="1200" height="600"></canvas>
 		<script>
-			var arr = [9, 8, 4, 7, 2, 6, 1, 5, 4, 9, 8, 4, 7, 2, 6, 1, 5, 4];
+			var arr = [];
+			for (var i = 0; i < 10; i++) {
+				arr.push(Math.floor(Math.random() * 50));
+			}
 
 			var canvas = document.getElementById('canvas');
 			var context = canvas.getContext('2d');
@@ -25,13 +28,13 @@
 			var height = canvas.height;
 			var ux = width / arr.length;
 			var uy = 10;
-			var radius = 8;
+			var radius = 12;
 
 			function drawArray(data) {
 				context.clearRect(0, 0, width, height);
 
 				data[0].forEach(function(item, index, arr) {
-					var ball = new Ball(radius, '#369');
+					var ball = new Ball(radius, '#369', item);
 					ball.x = index * ux + 10;
 					ball.y = height - item * uy;
 					ball.draw(context);
@@ -42,7 +45,7 @@
 				 */
 
 				data[1].forEach(function(item, index, arr) {
-					var ball = new Ball(radius, '#f00');
+					var ball = new Ball(radius, '#f00', item[1]);
 					ball.x = item[0] * ux + 10;
 					ball.y = height - item[1] * uy;
 					ball.draw(context);
@@ -51,7 +54,7 @@
 
 			var data = getData(arr);
 			console.log(data.length);
-			var count = 0; 
+			var count = 0;
 			(function draw() {
 				if (count >= data.length) {
 					return;
@@ -60,7 +63,7 @@
 				drawArray(data[count]);
 				setTimeout(function() {
 					draw(++count);
-				}, 50);
+				}, 1000);
 			})();
 
 			function getData(arr) {

@@ -1,4 +1,4 @@
-function Ball(radius, color) {
+function Ball(radius, color, text) {
 	if (radius === undefined) {
 		radius = 40;
 	}
@@ -15,6 +15,7 @@ function Ball(radius, color) {
 	this.scaleY = 1;
 	this.color = utils.parseColor(color);
 	this.lineWidth = 1;
+	this.text = text;
 }
 
 Ball.prototype.draw = function(context) {
@@ -32,5 +33,8 @@ Ball.prototype.draw = function(context) {
 	if (this.lineWidth > 0) {
 		context.stroke();
 	}
+	context.fillStyle = 'black';
+	context.textBaseAlign = 'middle';
+	context.fillText(this.text, this.x, this.y);
 	context.restore();
 };
