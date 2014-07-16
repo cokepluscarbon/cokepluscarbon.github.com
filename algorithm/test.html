@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="utils.js" ></script>
+		<script type="text/javascript" src="ball.js" ></script>
+		<style type="text/css">
+			body {
+				background-color: #EEEEEE;
+			}
+			canvas {
+				background-color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas  id="canvas" width="1200" height="600"></canvas>
+		<script>
+			var arr = [9, 8, 4, 7, 2, 6, 1, 5, 4, 9, 8, 4, 7, 2, 6, 1, 5, 4];
+
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			var width = canvas.width;
+			var height = canvas.height;
+			var ux = width / arr.length;
+			var uy = 10;
+			var radius = 8;
+
+			function drawArray(data) {
+				context.clearRect(0, 0, width, height);
+
+				data[0].forEach(function(item, index, arr) {
+					var ball = new Ball(radius, '#369');
+					ball.x = index * ux + 10;
+					ball.y = height - item * uy;
+					ball.draw(context);
+				});
+
+				/**
+				 * [[index1,val1],[index2,val2]]
+				 */
+
+				data[1].forEach(function(item, index, arr) {
+					var ball = new Ball(radius, '#f00');
+					ball.x = item[0] * ux + 10;
+					ball.y = height - item[1] * uy;
+					ball.draw(context);
+				});
+			}
+
+			var data = getData(arr);
+			console.log(data.length);
+			var count = 0; 
+			(function draw() {
+				if (count >= data.length) {
+					return;
+				}
+
+				drawArray(data[count]);
+				setTimeout(function() {
+					draw(++count);
+				}, 50);
+			})();
+
+			function getData(arr) {
+				var rs = [];
+				for (var i = 0; i < arr.length - 1; i++) {
+					for (var j = 0; j < arr.length - 1; j++) {
+						if (arr[j] > arr[j + 1]) {
+							var tmp = arr[j];
+							arr[j] = arr[j + 1];
+							arr[j + 1] = tmp;
+						}
+
+						rs.push([arr.slice(), [[j, arr[j]], [j + 1, arr[j + 1]]]]);
+					}
+				}
+				return rs;
+			}
+
+		</script>
+	</body>
+</html>
