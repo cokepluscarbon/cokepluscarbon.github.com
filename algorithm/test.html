@@ -4,39 +4,67 @@
 		<meta charset="utf-8">
 		<title></title>
 		<script type="text/javascript" src="utils.js" ></script>
+		<script type="text/javascript" src="coordinate.js" ></script>
 		<script type="text/javascript" src="ball.js" ></script>
 		<style type="text/css">
 			body {
 				background-color: #EEEEEE;
 			}
-			canvas {
+			article {
+				position: relative;
+			}
+			#coordinate, #canvas {
+				position: absolute;
+			}
+			#coordinate {
 				background-color: white;
+				top: 0px;
+				left: 0px;
+			}
+			#canvas {
+				background-color: transparent;
+				top: 20px;
+				left: 20px;
 			}
 		</style>
 	</head>
 	<body>
-		<canvas  id="canvas" width="1200" height="600"></canvas>
+		<article>
+			<canvas id="coordinate" width="900" height="450"></canvas>
+			<canvas id="canvas" width="860" height="410"></canvas>
+		</article>
 		<script>
+			var cdCanvas = document.getElementById('coordinate');
+			var cdContext = cdCanvas.getContext('2d');
+
+			var coordinate = new Coordinate(20, 20, cdCanvas.width - 40, cdCanvas.height - 40, 2, null, 7);
+			coordinate.draw(cdContext);
+		</script>
+		<script>
+			/**
+			 *  数值限制在1-99之间
+			 */
 			var arr = [];
-			for (var i = 0; i < 10; i++) {
-				arr.push(Math.floor(Math.random() * 50));
+			for (var i = 0; i < 20; i++) {
+				arr.push(Math.floor(Math.random() * 100));
 			}
 
 			var canvas = document.getElementById('canvas');
 			var context = canvas.getContext('2d');
 			var width = canvas.width;
 			var height = canvas.height;
-			var ux = width / arr.length;
-			var uy = 10;
-			var radius = 12;
+			var radius = 10;
+			var ux = width / arr.length - (radius / arr.length); // 单元格尺寸
+			var uy = height / max(arr) - (radius / arr.length);
 
+			console.log(ux + ':' + uy);
 			function drawArray(data) {
 				context.clearRect(0, 0, width, height);
 
 				data[0].forEach(function(item, index, arr) {
 					var ball = new Ball(radius, '#369', item);
-					ball.x = index * ux + 10;
-					ball.y = height - item * uy;
+					ball.x = index * ux + radius;
+					ball.y = height - item * uy - radius;
 					ball.draw(context);
 				});
 
@@ -46,14 +74,13 @@
 
 				data[1].forEach(function(item, index, arr) {
 					var ball = new Ball(radius, '#f00', item[1]);
-					ball.x = item[0] * ux + 10;
-					ball.y = height - item[1] * uy;
+					ball.x = item[0] * ux + radius;
+					ball.y = height - item[1] * uy - radius;
 					ball.draw(context);
 				});
 			}
 
 			var data = getData(arr);
-			console.log(data.length);
 			var count = 0;
 			(function draw() {
 				if (count >= data.length) {
@@ -63,7 +90,7 @@
 				drawArray(data[count]);
 				setTimeout(function() {
 					draw(++count);
-				}, 1000);
+				}, 50);
 			})();
 
 			function getData(arr) {
@@ -80,6 +107,16 @@
 					}
 				}
 				return rs;
+			}
+
+			function max(arr) {
+				var max = arr[0];
+				arr.forEach(function(item, index, arr) {
+					if (item > max) {
+						max = item;
+					}
+				});
+				return max;
 			}
 
 		</script>
