@@ -11,9 +11,11 @@
 				background-color: #EEEEEE;
 			}
 			article {
+				width: 900px;
+				height: 480px;
 				position: relative;
 			}
-			#coordinate, #canvas {
+			#coordinate, #canvas, #debug {
 				position: absolute;
 			}
 			#coordinate {
@@ -26,12 +28,22 @@
 				top: 20px;
 				left: 20px;
 			}
+			#debug {
+				left: 0px;
+				bottom: 0px;
+				width: 100%;
+				height: 30px;
+			}
 		</style>
 	</head>
 	<body>
 		<article>
 			<canvas id="coordinate" width="900" height="450"></canvas>
 			<canvas id="canvas" width="860" height="410"></canvas>
+			<div id="debug">
+				<span>索引：</span><span id="query-index"></span>
+				<span>值：</span><span id="query-value"></span>
+			</div>
 		</article>
 		<script>
 			var cdCanvas = document.getElementById('coordinate');
@@ -45,7 +57,7 @@
 			 *  数值限制在1-99之间
 			 */
 			var arr = [];
-			for (var i = 0; i < 20; i++) {
+			for (var i = 0; i < 30; i++) {
 				arr.push(Math.floor(Math.random() * 100));
 			}
 
@@ -54,14 +66,38 @@
 			var width = canvas.width;
 			var height = canvas.height;
 			var radius = 10;
-			var ux = width / arr.length - (radius / arr.length); // 单元格尺寸
+			var ux = width / arr.length - (radius / arr.length);
+			// 单元格尺寸
 			var uy = height / max(arr) - (radius / arr.length);
 
-			console.log(ux + ':' + uy);
+			var queryIndex = document.getElementById('query-index');
+			var queryValue = document.getElementById('query-value');
+
 			function drawArray(data) {
 				context.clearRect(0, 0, width, height);
 
-				data[0].forEach(function(item, index, arr) {
+				/**
+				 * handler rect
+				 */
+				context.save();
+				context.fillStyle = 'rgba(200,200,200,0.5)';
+				context.fillRect(data[0][0] * ux, 0, (data[0][1] - data[0][0]) * ux + radius * 2, height);
+				context.fill();
+				context.restore();
+
+				/**
+				 * base line
+				 */
+				/*
+				context.save();
+				context.strokeStyle = 'rgba(0,255,0.3)';
+				context.moveTo(data[0][0] * ux, height - data[3] * uy - radius * 2);
+				context.lineTo(data[0][1] * ux, height - data[3] * uy - radius * 2);
+				context.stroke();
+				context.restore();
+				*/
+
+				data[1].forEach(function(item, index, arr) {
 					var ball = new Ball(radius, '#369', item);
 					ball.x = index * ux + radius;
 					ball.y = height - item * uy - radius;
@@ -72,15 +108,20 @@
 				 * [[index1,val1],[index2,val2]]
 				 */
 
-				data[1].forEach(function(item, index, arr) {
+				data[2].forEach(function(item, index, arr) {
 					var ball = new Ball(radius, '#f00', item[1]);
 					ball.x = item[0] * ux + radius;
 					ball.y = height - item[1] * uy - radius;
 					ball.draw(context);
+
+					queryIndex.innerText = item[0];
+					queryValue.innerHTML = item[1];
 				});
+
 			}
 
 			var data = getData(arr);
+			console.log(data.length);
 			var count = 0;
 			(function draw() {
 				if (count >= data.length) {
@@ -90,22 +131,14 @@
 				drawArray(data[count]);
 				setTimeout(function() {
 					draw(++count);
-				}, 50);
+				}, 500);
 			})();
 
 			function getData(arr) {
 				var rs = [];
-				for (var i = 0; i < arr.length - 1; i++) {
-					for (var j = 0; j < arr.length - 1; j++) {
-						if (arr[j] > arr[j + 1]) {
-							var tmp = arr[j];
-							arr[j] = arr[j + 1];
-							arr[j + 1] = tmp;
-						}
 
-						rs.push([arr.slice(), [[j, arr[j]], [j + 1, arr[j + 1]]]]);
-					}
-				}
+				quickSort(arr, 0, arr.length - 1, rs);
+
 				return rs;
 			}
 
@@ -117,6 +150,40 @@
 					}
 				});
 				return max;
+			}
+
+			function quickSort(arr, l, r, rs) {
+				if (l < r) {
+					var x = arr[l];
+					var i = l;
+					var j = r;
+
+					while (i < j) {
+						while (i < j && arr[j] >= x) {
+							j--;
+							rs.push([[l, r], arr.slice(), [[i, arr[i]], [j, arr[j]]], x]);
+						}
+						if (i < j) {
+							arr[i++] = arr[j];
+							rs.push([[l, r], arr.slice(), [[i, arr[i]], [j, arr[j]]], x]);
+						}
+
+						while (i < j && arr[i] < x) {
+							i++;
+							rs.push([[l, r], arr.slice(), [[i, arr[i]], [j, arr[j]]], x]);
+						}
+						if (i < j) {
+							arr[j--] = arr[i];
+							rs.push([[l, r], arr.slice(), [[i, arr[i]], [j, arr[j]]], x]);
+						}
+					}
+
+					arr[i] = x;
+
+					// 递归调用
+					quickSort(arr, l, i - 1, rs);
+					quickSort(arr, i + 1, r, rs);
+				}
 			}
 
 		</script>

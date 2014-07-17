@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="utils.js" ></script>
+		<script type="text/javascript" src="coordinate.js" ></script>
+		<script type="text/javascript" src="ball.js" ></script>
+		<style type="text/css">
+			body {
+				background-color: #EEEEEE;
+			}
+			article {
+				width: 900px;
+				height: 480px;
+				position: relative;
+			}
+			#coordinate, #canvas, #debug {
+				position: absolute;
+			}
+			#coordinate {
+				background-color: white;
+				top: 0px;
+				left: 0px;
+			}
+			#canvas {
+				background-color: transparent;
+				top: 20px;
+				left: 20px;
+			}
+			#debug {
+				left: 0px;
+				bottom: 0px;
+				width: 100%;
+				height: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<article>
+			<canvas id="coordinate" width="900" height="450"></canvas>
+			<canvas id="canvas" width="860" height="410"></canvas>
+			<div id="debug">
+				<span>索引：</span><span id="query-index"></span>
+				<span>值：</span><span id="query-value"></span>
+			</div>
+		</article>
+		<script>
+			var cdCanvas = document.getElementById('coordinate');
+			var cdContext = cdCanvas.getContext('2d');
+
+			var coordinate = new Coordinate(20, 20, cdCanvas.width - 40, cdCanvas.height - 40, 2, null, 7);
+			coordinate.draw(cdContext);
+		</script>
+		<script>
+			/**
+			 *  数值限制在1-99之间
+			 */
+			var arr = [];
+			for (var i = 0; i < 20; i++) {
+				arr.push(Math.floor(Math.random() * 100));
+			}
+
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			var width = canvas.width;
+			var height = canvas.height;
+			var radius = 10;
+			var ux = width / arr.length - (radius / arr.length); // 单元格尺寸
+			var uy = height / max(arr) - (radius / arr.length);
+
+			var queryIndex = document.getElementById('query-index');
+			var queryValue = document.getElementById('query-value');;
+			function drawArray(data) {
+				context.clearRect(0, 0, width, height);
+
+				data[0].forEach(function(item, index, arr) {
+					var ball = new Ball(radius, '#369', item);
+					ball.x = index * ux + radius;
+					ball.y = height - item * uy - radius;
+					ball.draw(context);
+				});
+
+				/**
+				 * [[index1,val1],[index2,val2]]
+				 */
+
+				data[1].forEach(function(item, index, arr) {
+					var ball = new Ball(radius, '#f00', item[1]);
+					ball.x = item[0] * ux + radius;
+					ball.y = height - item[1] * uy - radius;
+					ball.draw(context);
+					
+					queryIndex.innerText = item[0];
+					queryValue.innerHTML = item[1];
+				});
+			}
+
+			var data = getData(arr);
+			var count = 0;
+			(function draw() {
+				if (count >= data.length) {
+					return;
+				}
+
+				drawArray(data[count]);
+				setTimeout(function() {
+					draw(++count);
+				}, 100);
+			})();
+
+			function getData(arr) {
+				var rs = [];
+				for (var i = 0; i < arr.length - 1; i++) {
+					for (var j = 0; j < arr.length - 1 -i; j++) {
+						if (arr[j] > arr[j + 1]) {
+							var tmp = arr[j];
+							arr[j] = arr[j + 1];
+							arr[j + 1] = tmp;
+						}
+
+						rs.push([arr.slice(), [[j, arr[j]], [j + 1, arr[j + 1]]]]);
+					}
+				}
+				return rs;
+			}
+
+			function max(arr) {
+				var max = arr[0];
+				arr.forEach(function(item, index, arr) {
+					if (item > max) {
+						max = item;
+					}
+				});
+				return max;
+			}
+
+		</script>
+	</body>
+</html>

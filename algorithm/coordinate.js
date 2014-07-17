@@ -21,7 +21,7 @@ Coordinate.prototype.draw = function(context) {
 	// 绘画表格
 	context.save();
 	context.beginPath();
-	context.strokeStyle = '#CCCCCC';
+	context.strokeStyle = '#dddddd';
 	context.lineWidth = 1;
 	for (var i = this.bottom; i > this.top; i -= 15) {
 		context.moveTo(this.left, i + 0.5);
